@@ -5,16 +5,21 @@ import { useEffect, useState } from "react";
 import CreateAccount from "./routes/create-accout";
 import Home from "./routes/home";
 import Layout from "./components/layout";
-import LoadingScreen from "./routes/loading-screen";
+import LoadingScreen from "./components/loading-screen";
 import Login from "./routes/login";
 import Profile from "./routes/profile";
+import ProtectedRoute from "./components/protected-route";
 import { auth } from "./firebase";
 import reset from "styled-reset";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
@@ -57,7 +62,7 @@ const Wrapper = styled.div`
 function App() {
   const [isLoading, setLoading] = useState(true);
   const init = async () => {
-    // await auth.authStateReady();
+    await auth.authStateReady();
     setLoading(false);
   };
   useEffect(() => {
